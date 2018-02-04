@@ -9,11 +9,29 @@ class SearchBox extends Component {
     this.onUpdateInput = this.onUpdateInput.bind(this);
     this.state = {
       dataSource : [],
-      inputValue : '',
+      searchText : '',
     }
   }
 
-  onUpdateInput(inputValue) {
+  onUpdateInput(searchText) {
+    this.setState({
+      searchText: searchText
+    }, function() {
+      this.performSearch();
+    });
+  }
+
+  performSearch() {
+    const url = 'api.genius.com/search/artist?q=' + this.state.searchText;
+
+    fetch(url, {
+      method : 'GET',
+      headers : new Headers({
+        'Authorization': 'Bearer W1Hzi8KvAYuZ5BAjlOvz_N1zsR1FjN6SuyvhTIJX8EVUr8h6lk-FOeJ2YDiBAEdp'
+      })
+    })
+    .then(response => console.log('Success', response))
+    .catch(error => console.error('Error:', error))
   }
 
   render() {
