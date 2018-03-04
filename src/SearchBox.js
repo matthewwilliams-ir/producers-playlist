@@ -9,7 +9,7 @@ class SearchBox extends Component {
     this.onUpdateInput = this.onUpdateInput.bind(this);
     this.state = {
       dataSource : [],
-      searchText : '',
+      searchText : ''
     }
   }
 
@@ -22,22 +22,25 @@ class SearchBox extends Component {
   }
 
   performSearch() {
-    const url = 'api.genius.com/search/artist?q=' + this.state.searchText;
+
+    const url = 'https://api.genius.com/search?q=' + this.state.searchText +
+    "&access_token=W1Hzi8KvAYuZ5BAjlOvz_N1zsR1FjN6SuyvhTIJX8EVUr8h6lk-FOeJ2YDiBAEdp";
 
     fetch(url, {
-      method : 'GET',
-      headers : new Headers({
-        'Authorization': 'Bearer W1Hzi8KvAYuZ5BAjlOvz_N1zsR1FjN6SuyvhTIJX8EVUr8h6lk-FOeJ2YDiBAEdp'
-      })
+      method : 'GET'
     })
-    .then(response => console.log('Success', response))
+    .then(response => response.json())
+    .then(json => this.setState({
+      dataSource: json.response.hits.map(song => song.result.full_title)
+    }))
     .catch(error => console.error('Error:', error))
   }
 
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme()}>
       <AutoComplete
-        hintText="Enter Producer Name"
+        floatingLabelText="Search Producer"
+        fullWidth={true}
         dataSource = {this.state.dataSource}
         onUpdateInput = {this.onUpdateInput}/>
       </MuiThemeProvider>
