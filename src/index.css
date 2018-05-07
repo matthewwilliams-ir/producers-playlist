@@ -1,5 +1,10 @@
-html, body {
+/* html, body {
     height: 25%;
+} */
+
+.search-box {
+  display: table;
+  margin: auto;
 }
 
 /* html {
